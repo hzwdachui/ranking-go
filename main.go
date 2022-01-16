@@ -1,25 +1,37 @@
-// Copyright 2022 Baidu Inc. All rights reserved.
-// Use of this source code is governed by a xxx
-// license that can be found in the LICENSE file.
-
-/*
-modification history
---------------------
-2022/01/17 02:22:04, by wangziqi@baidu.com, create
-*/
-
-// Package main is special.  It defines a
-// standalone executable program, not a library.
-// Within package main the function main is also
-// special—it’s where execution of the program begins.
-// Whatever main does is what the program does.
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
+
+	controller "example.com/rankingSystem/controller/rankList"
 )
 
-// main the function where execution of the program begins
+type Config struct {
+	Host string `json:"host"`
+	Port string `json:"port"`
+}
+
 func main() {
-	fmt.Println("Hello, World!")
+	controller.Register()
+	appConf := loadAppConf()
+	err := http.ListenAndServe(appConf.Host+":"+appConf.Port, nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
+}
+
+func loadAppConf() Config {
+	file, err := ioutil.ReadFile("./config/app.json")
+	if err != nil {
+		panic(err)
+	}
+	conf := Config{}
+	err = json.Unmarshal(file, &conf)
+	if err != nil {
+		panic(err)
+	}
+	return conf
 }
