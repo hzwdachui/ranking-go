@@ -1,11 +1,15 @@
 package user
 
+const (
+	VOTE_LIMIT = 10
+)
+
 // NewUser
 func NewUser(id int, voteCnt int) User {
 	return &user{
 		id:        id,
 		voteCnt:   voteCnt,
-		voteLimit: 10,
+		voteLimit: VOTE_LIMIT,
 	}
 }
 

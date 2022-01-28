@@ -187,7 +187,7 @@ func Test_ranklist_Range(t *testing.T) {
 			},
 		},
 		{
-			name: "case1 反向获取",
+			name: "case2 反向获取",
 			rl: func() RankList {
 				rl := &ranklist{
 					set: *sortedset.Make(),
@@ -210,6 +210,52 @@ func Test_ranklist_Range(t *testing.T) {
 				{
 					Member: "1",
 					Score:  2,
+				},
+			},
+		},
+		{
+			name: "case3 使用接口错误",
+			rl: func() RankList {
+				rl := &ranklist{
+					set: *sortedset.Make(),
+				}
+				rl.set.Add("1", 2)
+				rl.set.Add("2", 3)
+				rl.set.Add("3", 1)
+				return rl
+			},
+			args: args{
+				start: 2,
+				end:   0,
+				desc:  true,
+			},
+			want: []*sortedset.Element{},
+		},
+		{
+			name: "case4 正常获取2",
+			rl: func() RankList {
+				rl := &ranklist{
+					set: *sortedset.Make(),
+				}
+				rl.set.Add("1", 2)
+				rl.set.Add("1", 4)
+				rl.set.Add("2", 3)
+				rl.set.Add("3", 1)
+				return rl
+			},
+			args: args{
+				start: 1,
+				end:   10,
+				desc:  false,
+			},
+			want: []*sortedset.Element{
+				{
+					Member: "2",
+					Score:  3,
+				},
+				{
+					Member: "1",
+					Score:  4,
 				},
 			},
 		},

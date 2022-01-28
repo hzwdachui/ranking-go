@@ -41,11 +41,16 @@ func (rl *ranklist) Vote(starId int, ticketNum int) {
 	}
 }
 
-// Range 排行榜信息
+// Range 排行榜信息 取值范围 [start, end)
 func (rl *ranklist) Range(start int, end int, desc bool) []*sortedset.Element {
 	len := rl.set.Len()
-	if int64(end)-int64(start) > len {
-		return rl.set.Range(int64(start), int64(start)+len, desc)
+	// 计算合法的上下区间
+	if end < start {
+		return make([]*sortedset.Element, 0)
+	}
+
+	if int64(end) >= len {
+		return rl.set.Range(int64(start), len, desc)
 	}
 
 	return rl.set.Range(int64(start), int64(end), desc)

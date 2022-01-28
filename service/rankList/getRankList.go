@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	ranklist "example.com/rankingSystem/data/rankList"
+	"example.com/rankingSystem/data/user"
 	"example.com/rankingSystem/global"
 	"example.com/rankingSystem/utils"
 	"github.com/hdt3213/godis/datastruct/sortedset"
@@ -46,7 +47,7 @@ func GetRankListHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	// 获取排行榜并排序
-	elements := rl.Range(0, 10, true)
+	elements := rl.Range(0, user.VOTE_LIMIT, true)
 	getRankListSucc(w, rl, elements)
 }
 

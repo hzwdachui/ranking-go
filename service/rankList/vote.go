@@ -36,16 +36,16 @@ func VoteHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// 获取排行榜
-	rl := global.RL_MAP.SetNX(*params.RankId, ranklist.NewRankList(*params.RankId))
-	rl.Vote(*params.StarId, 1)
-
 	// 记录用户投票数
 	u := global.USER_MAP.SetNX(*params.Uid, user.NewUser(*params.Uid, 0))
 	if suc := u.Incr(); !suc {
 		voteResponseErr(w, "vote too many times")
 		return
 	}
+
+	// 获取排行榜
+	rl := global.RL_MAP.SetNX(*params.RankId, ranklist.NewRankList(*params.RankId))
+	rl.Vote(*params.StarId, 1)
 
 	voteRepsonseSucc(w, u)
 }
