@@ -8,6 +8,7 @@ import (
 	ranklist "example.com/rankingSystem/data/rankList"
 	"example.com/rankingSystem/data/user"
 	"example.com/rankingSystem/global"
+	"example.com/rankingSystem/logger"
 	"example.com/rankingSystem/utils"
 	"github.com/hdt3213/godis/datastruct/sortedset"
 )
@@ -39,11 +40,13 @@ func GetRankListHandler(w http.ResponseWriter, req *http.Request) {
 	params, err := checkParamsGetRankList(req)
 	if err != nil {
 		getRankListResponseErr(w, "params error")
+		logger.Infof("serviceranklist: VoteHandler: %v", err)
 		return
 	}
 	rl, has := global.RL_MAP.Get(*params.RankId)
 	if !has {
-		getRankListResponseErr(w, "not such rank")
+		getRankListResponseErr(w, "no such rank")
+		logger.Info("serviceranklist: VoteHandler: no such rank")
 		return
 	}
 	// 获取排行榜并排序

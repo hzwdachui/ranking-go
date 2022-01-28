@@ -7,6 +7,7 @@ import (
 	ranklist "example.com/rankingSystem/data/rankList"
 	"example.com/rankingSystem/data/user"
 	"example.com/rankingSystem/global"
+	"example.com/rankingSystem/logger"
 	"example.com/rankingSystem/utils"
 )
 
@@ -33,6 +34,7 @@ func VoteHandler(w http.ResponseWriter, req *http.Request) {
 	params, err := checkParamsVote(req)
 	if err != nil {
 		voteResponseErr(w, "params error")
+		logger.Infof("serviceranklist: VoteHandler: %v", err)
 		return
 	}
 
@@ -40,6 +42,7 @@ func VoteHandler(w http.ResponseWriter, req *http.Request) {
 	u := global.USER_MAP.SetNX(*params.Uid, user.NewUser(*params.Uid, 0))
 	if suc := u.Incr(); !suc {
 		voteResponseErr(w, "vote too many times")
+		logger.Info("serviceranklist: VoteHandler: vote too many times")
 		return
 	}
 

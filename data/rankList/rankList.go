@@ -3,6 +3,7 @@ package ranklist
 import (
 	"strconv"
 
+	"example.com/rankingSystem/logger"
 	"github.com/hdt3213/godis/datastruct/sortedset"
 )
 
@@ -46,6 +47,7 @@ func (rl *ranklist) Range(start int, end int, desc bool) []*sortedset.Element {
 	len := rl.set.Len()
 	// 计算合法的上下区间
 	if end < start {
+		logger.Warn("ranklist: Range: start should less than or equal to end")
 		return make([]*sortedset.Element, 0)
 	}
 

@@ -33,7 +33,7 @@ func TestGetRankListHandler(t *testing.T) {
 				w:   httptest.NewRecorder(),
 				req: httptest.NewRequest("GET", "http://test.com/getRankList?rankId=1", nil),
 			},
-			wantBody: `{"code":400,"msg":"not such rank","data":{}}`,
+			wantBody: `{"code":400,"msg":"no such rank","data":{}}`,
 		},
 	}
 	for _, tt := range tests {

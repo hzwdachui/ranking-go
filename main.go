@@ -3,23 +3,27 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	controller "example.com/rankingSystem/controller/rankList"
+	"example.com/rankingSystem/logger"
 )
 
 type Config struct {
-	Host string `json:"host"`
-	Port string `json:"port"`
+	Host     string `json:"host"`
+	Port     string `json:"port"`
+	LogLevel string `json:"log_level"`
 }
 
 func main() {
-	controller.Register()
+	// 初始化 app
 	appConf := loadAppConf()
+	logger.InitLogger(appConf.LogLevel)
+	controller.Register()
+
 	err := http.ListenAndServe(appConf.Host+":"+appConf.Port, nil)
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		logger.Fatal("ListenAndServe: ", err)
 	}
 }
 

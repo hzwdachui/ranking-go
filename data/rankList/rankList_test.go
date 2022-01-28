@@ -4,10 +4,16 @@ import (
 	"strconv"
 	"testing"
 
+	"example.com/rankingSystem/logger"
 	"github.com/golang/mock/gomock"
 	"github.com/hdt3213/godis/datastruct/sortedset"
 	"github.com/smartystreets/goconvey/convey"
 )
+
+func TestMain(m *testing.M) {
+	logger.InitLogger("debug")
+	m.Run()
+}
 
 func TestNewRankList(t *testing.T) {
 	type args struct {
